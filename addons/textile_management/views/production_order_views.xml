@@ -23,6 +23,13 @@
         <field name="model">textile.production</field>
         <field name="arch" type="xml">
             <form string="Production Order">
+                <header>
+                    <field
+                        name="state"
+                        widget="statusbar"
+                        statusbar_visible="draft,confirmed,in_progress,quality_check,completed"
+                    />
+                </header>
                 <sheet>
                     <div class="oe_title">
                         <label for="name" />
@@ -40,7 +47,6 @@
                         <group>
                             <field name="deadline"/>
                             <field name="responsible_id"/>
-                            <field name="state"/>
                         </group>
                     </group>
                 </sheet>

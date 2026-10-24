@@ -13,8 +13,11 @@ class TextileProductionOrder(models.Model):
     responsible_id = fields.Many2one('res.users', string='Penanggung Jawab', required=True)
     state = fields.Selection([
         ('draft', 'Draft'),
+        ('confirmed', 'Confirmed'),
+        ('in_progress', 'In Progress'),
+        ('quality_check', 'Quality Check'),
         ("completed", 'Completed'),
-    ], string='Status', default='draft', required=True)
+    ], string='Status', default='draft', required=True, copy=False)
 
     @api.constrains("quantity")
     def _check_quantity(self):
