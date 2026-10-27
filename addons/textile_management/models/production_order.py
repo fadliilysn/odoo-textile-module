@@ -39,6 +39,42 @@ class TextileProductionOrder(models.Model):
                     "Batas waktu tidak boleh lebih awal "
                     "dari tanggal produksi."
                 )
+            
+    def action_confirm(self):
+        for record in self:
+            if record.state != 'draft':
+                raise ValidationError(
+                    "Hanya pesanan produksi dalam status 'Draft' "
+                    "yang dapat dikonfirmasi."
+                )
+            record.state = 'confirmed'
+
+    def action_start_production(self):
+        for record in self:
+            if record.state != 'confirmed':
+                raise ValidationError(
+                    "Hanya pesanan produksi dalam status 'Confirmed' "
+                    "yang dapat memulai produksi."
+                )
+            record.state = 'in_progress'
+
+    def action_send_to_quality(self):
+        for record in self:
+            if record.state != 'in_progress':
+                raise ValidationError(
+                    "Hanya pesanan produksi dalam status 'In Progress' "
+                    "yang dapat dikirim ke Quality Check."
+                )
+            record.state = 'quality_check'
+
+    def action_approve_quality(self):
+        for record in self:
+            if record.state != 'quality_check':
+                raise ValidationError(
+                    "Hanya pesanan produksi dalam status 'Quality Check' "
+                    "yang dapat diselesaikan."
+                )
+            record.state = 'completed'
 
     @api.model_create_multi
     def create(self, vals_list):

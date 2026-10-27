@@ -24,11 +24,34 @@
         <field name="arch" type="xml">
             <form string="Production Order">
                 <header>
-                    <field
-                        name="state"
-                        widget="statusbar"
-                        statusbar_visible="draft,confirmed,in_progress,quality_check,completed"
-                    />
+                    <button name="action_confirm"
+                            type="object"
+                            string="Confirm Order"
+                            invisible="state != 'draft'"
+                            class="btn-primary"/>
+
+                    <button name="action_start_production"
+                            type="object"
+                            string="Start Production"
+                            invisible="state != 'confirmed'"
+                            class="btn-primary"/>
+
+                    <button name="action_send_to_quality"
+                            type="object"
+                            string="Send to Quality Check"
+                            invisible="state != 'in_progress'"
+                            class="btn-warning"/>
+
+                    <button name="action_approve_quality"
+                            type="object"
+                            string="Approve Quality"
+                            invisible="state != 'quality_check'"
+                            class="btn-success"/>
+                    
+                    <field name="state"
+                            widget="statusbar"
+                            statusbar_visible="draft,confirmed,in_progress,quality_check,completed"
+                            statusbar_colors='{"draft": "blue", "confirmed": "orange", "in_progress": "purple", "quality_check": "yellow", "completed": "green"}'/>
                 </header>
                 <sheet>
                     <div class="oe_title">
