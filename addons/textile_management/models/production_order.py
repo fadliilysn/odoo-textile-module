@@ -87,3 +87,22 @@ class TextileProductionOrder(models.Model):
                     or "New"
                 )
         return super().create(vals_list)
+
+    def write(self, vals):
+        planning_fields = {
+            "product_id",
+            "quantity",
+            "production_date",
+            "deadline",
+            "responsible_id",
+        }
+
+        if planning_fields.intersection(vals):
+            for record in self:
+                if record.state != "draft":
+                    raise ValidationError(
+                        "Field planning hanya bisa diubah "
+                        "ketika Production Order berstatus Draft."
+                    )
+
+        return super().write(vals)
